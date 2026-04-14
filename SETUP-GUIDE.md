@@ -1,4 +1,4 @@
-# ANF Feature Readiness Skills — Team Setup Guide
+# ANF Feature Readiness Skills - Team Setup Guide
 
 This guide walks you through installing and configuring the Cursor AI skills that automate Feature Readiness Plans, Initiative Hubs, and the Weekly PLR Report.
 
@@ -10,14 +10,14 @@ This guide walks you through installing and configuring the Cursor AI skills tha
 |---|---|---|
 | **feature-readiness-plan** | Creates a Feature Readiness Plan (Private Preview / Public Preview / GA) from a Jira issue, calculates milestone dates, populates owners, publishes to Confluence | Give Cursor a Jira issue key that has a Feature Stage |
 | **feature-readiness-hub** | Creates an Initiative-level parent page in Confluence that groups all feature plans under one initiative | Automatically invoked by feature-readiness-plan when an Initiative Key exists, or run standalone |
-| **Weekly-Ring** | Generates the weekly PLR meeting report — Confluence page + HTML email with the full feature table | Type `/anfplrweeklyreport` or ask Cursor to generate the weekly report |
+| **Weekly-Ring** | Generates the weekly PLR meeting report - Confluence page + HTML email with the full feature table | Type `/anfplrweeklyreport` or ask Cursor to generate the weekly report |
 
 ---
 
 ## Prerequisites
 
 - **macOS** or **Linux** desktop
-- **Cursor IDE** (latest version) — download from [cursor.com](https://www.cursor.com)
+- **Cursor IDE** (latest version) - download from [cursor.com](https://www.cursor.com)
 - A **NetApp Jira** account with an API token
 - An **Atlassian Cloud** account (for Confluence access)
 - Access to the internal **SMTP relay** (for sending email reports)
@@ -70,18 +70,18 @@ After copying, you should see this layout:
 
 ```
 ~/.cursor/skills/
-├── feature-readiness-plan/
-│   ├── SKILL.md                  # Main skill instructions
-│   ├── ownership-rules.md        # Owner assignment rules
-│   └── templates/
-│       ├── private-preview.md    # Stage template (fetched live from Confluence)
-│       ├── public-preview.md
-│       └── ga.md
-├── feature-readiness-hub/
-│   ├── SKILL.md                  # Hub skill instructions
-│   └── reference-hub-template.md # Offline reference of the hub template
-└── Weekly-Ring/
-    └── SKILL.md                  # Weekly report skill instructions
++-- feature-readiness-plan/
+|   +-- SKILL.md                  # Main skill instructions
+|   +-- ownership-rules.md        # Owner assignment rules
+|   +-- templates/
+|       +-- private-preview.md    # Stage template (fetched live from Confluence)
+|       +-- public-preview.md
+|       +-- ga.md
++-- feature-readiness-hub/
+|   +-- SKILL.md                  # Hub skill instructions
+|   +-- reference-hub-template.md # Offline reference of the hub template
++-- Weekly-Ring/
+    +-- SKILL.md                  # Weekly report skill instructions
 ```
 
 ---
@@ -132,14 +132,14 @@ Paste the following template and **replace all placeholder values** with your ow
 | Placeholder | How to get it |
 |---|---|
 | `YOUR_USERNAME` | Your NetApp username (e.g. `jsmith`) |
-| `YOUR_LITELLM_KEY` | Request from the AI/OpenEng team — this is your LiteLLM proxy API key |
+| `YOUR_LITELLM_KEY` | Request from the AI/OpenEng team - this is your LiteLLM proxy API key |
 | `YOUR_JIRA_BASE64_TOKEN` | Base64-encoded Jira PAT. Generate a Personal Access Token in Jira, then encode: `echo -n "YOUR_JIRA_PAT" \| base64` |
 
 #### Atlassian MCP Server (Confluence)
 
-- No credentials in `mcp.json` — the Atlassian MCP server uses **OAuth browser login**.
+- No credentials in `mcp.json` - the Atlassian MCP server uses **OAuth browser login**.
 - On first use, Cursor will prompt you to authenticate in your browser. Click through the Atlassian OAuth flow and authorize the MCP server.
-- Your session is cached — you only authenticate once per session.
+- Your session is cached - you only authenticate once per session.
 
 #### SMTP
 
@@ -188,7 +188,7 @@ In `~/.cursor/skills/Weekly-Ring/SKILL.md`, find `kiran.guleria@netapp.com` and 
 
 1. Open Cursor and start a chat
 2. Ask Cursor: "Use the Atlassian MCP to call `getConfluencePage` on page ID `<your Drafts page ID>`"
-3. The response will include `spaceId` — use that value
+3. The response will include `spaceId` - use that value
 
 ---
 
