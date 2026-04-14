@@ -1,6 +1,6 @@
-# ANF Feature Readiness Skills - Team Setup Guide
+# ANF Feature Readiness Skills - Setup Guide (Mac + PC)
 
-This guide walks you through installing and configuring the Cursor AI skills that automate Feature Readiness Plans, Initiative Hubs, and the Weekly PLR Report.
+This guide walks you through installing and configuring the Cursor AI skills that automate Feature Readiness Plans, Initiative Hubs, and the Weekly PLR Report. Works on **macOS, Windows, and Linux**.
 
 ---
 
@@ -8,97 +8,144 @@ This guide walks you through installing and configuring the Cursor AI skills tha
 
 | Skill | What It Does | Trigger |
 |---|---|---|
+| **Weekly-Ring** | Generates the weekly PLR meeting report - Confluence page + HTML email with the full feature table | Type `/anfplrweeklyreport` or ask Cursor to generate the weekly report |
 | **feature-readiness-plan** | Creates a Feature Readiness Plan (Private Preview / Public Preview / GA) from a Jira issue, calculates milestone dates, populates owners, publishes to Confluence | Give Cursor a Jira issue key that has a Feature Stage |
 | **feature-readiness-hub** | Creates an Initiative-level parent page in Confluence that groups all feature plans under one initiative | Automatically invoked by feature-readiness-plan when an Initiative Key exists, or run standalone |
-| **Weekly-Ring** | Generates the weekly PLR meeting report - Confluence page + HTML email with the full feature table | Type `/anfplrweeklyreport` or ask Cursor to generate the weekly report |
 
 ---
 
 ## Prerequisites
 
-- **macOS** or **Linux** desktop
-- **Cursor IDE** (latest version) - download from [cursor.com](https://www.cursor.com)
+- **Cursor IDE** (latest version) - download from [cursor.com](https://www.cursor.com) (available for Mac, Windows, and Linux)
 - A **NetApp Jira** account with an API token
 - An **Atlassian Cloud** account (for Confluence access)
-- Access to the internal **SMTP relay** (for sending email reports)
+- Access to the internal **SMTP relay** (for sending email reports) - requires VPN or on-prem network
+- **Git** installed ([git-scm.com](https://git-scm.com/downloads) - comes pre-installed on macOS)
 
 ---
 
 ## Step 1: Install Cursor IDE
 
 1. Download Cursor from [https://www.cursor.com](https://www.cursor.com)
-2. Install and launch it
-3. Sign in with your Cursor account (or create one)
-4. Open a terminal inside Cursor: **Ctrl+`** (backtick) or **Cmd+`** on macOS
+   - **Mac**: Download the `.dmg`, drag to Applications
+   - **Windows**: Download the `.exe` installer, run it
+   - **Linux**: Download the `.AppImage` or `.deb`
+2. Launch Cursor and sign in (or create a free account)
+3. Open the built-in terminal:
+   - **Mac**: Press **Cmd + `** (backtick)
+   - **Windows/Linux**: Press **Ctrl + `** (backtick)
 
 ---
 
-## Step 2: Copy the Skills Folder
+## Step 2: Install the Skills
 
-The skills live under `~/.cursor/skills/`. Create that directory and copy the three skill folders into it.
+The skills live under your Cursor skills folder. Choose your platform below.
 
-### Option A: Clone from the Git repository
+### Mac / Linux
+
+**Option A - One-line installer (recommended):**
+
+```bash
+curl -sL https://raw.githubusercontent.com/Guleriak/anf-feature-readiness-skills/main/install-skills.sh | bash
+```
+
+**Option B - Git clone:**
 
 ```bash
 git clone https://github.com/Guleriak/anf-feature-readiness-skills.git ~/.cursor/skills
 ```
 
-### Option B: Copy from a shared zip/tar archive
+**Option C - Manual download:**
 
-If someone shared an archive with you:
+1. Go to [https://github.com/Guleriak/anf-feature-readiness-skills](https://github.com/Guleriak/anf-feature-readiness-skills)
+2. Click the green **Code** button, then **Download ZIP**
+3. Extract the ZIP and copy the folders to `~/.cursor/skills/`
 
-```bash
-mkdir -p ~/.cursor/skills
-# extract the archive into ~/.cursor/skills/
-tar xzf anf-feature-readiness-skills.tar.gz -C ~/.cursor/skills/
+### Windows (PC)
+
+**Option A - Git clone (recommended):**
+
+Open **PowerShell** or **Command Prompt** and run:
+
+```powershell
+git clone https://github.com/Guleriak/anf-feature-readiness-skills.git "%USERPROFILE%\.cursor\skills"
 ```
 
-### Option C: Copy from a teammate's machine
+Or in PowerShell:
 
-```bash
-mkdir -p ~/.cursor/skills
-
-# Copy the three skill folders (adjust the source path)
-cp -R /path/to/source/feature-readiness-plan ~/.cursor/skills/
-cp -R /path/to/source/feature-readiness-hub  ~/.cursor/skills/
-cp -R /path/to/source/Weekly-Ring             ~/.cursor/skills/
+```powershell
+git clone https://github.com/Guleriak/anf-feature-readiness-skills.git "$env:USERPROFILE\.cursor\skills"
 ```
+
+**Option B - Manual download (no Git needed):**
+
+1. Go to [https://github.com/Guleriak/anf-feature-readiness-skills](https://github.com/Guleriak/anf-feature-readiness-skills)
+2. Click the green **Code** button, then **Download ZIP**
+3. Extract the ZIP file
+4. Open File Explorer and navigate to `C:\Users\YOUR_USERNAME\.cursor\`
+5. Create a folder called `skills` if it doesn't exist
+6. Copy these folders from the extracted ZIP into `C:\Users\YOUR_USERNAME\.cursor\skills\`:
+   - `Weekly-Ring`
+   - `feature-readiness-plan`
+   - `feature-readiness-hub`
+
+> **Tip**: The `.cursor` folder may be hidden. In File Explorer, click **View > Show > Hidden items** to see it.
 
 ### Verify the folder structure
 
-After copying, you should see this layout:
+After installing, you should see this layout:
+
+**Mac/Linux:** `~/.cursor/skills/`
+**Windows:** `C:\Users\YOUR_USERNAME\.cursor\skills\`
 
 ```
-~/.cursor/skills/
-+-- feature-readiness-plan/
-|   +-- SKILL.md                  # Main skill instructions
-|   +-- ownership-rules.md        # Owner assignment rules
-|   +-- templates/
-|       +-- private-preview.md    # Stage template (fetched live from Confluence)
-|       +-- public-preview.md
-|       +-- ga.md
-+-- feature-readiness-hub/
-|   +-- SKILL.md                  # Hub skill instructions
-|   +-- reference-hub-template.md # Offline reference of the hub template
-+-- Weekly-Ring/
-    +-- SKILL.md                  # Weekly report skill instructions
+skills/
+  Weekly-Ring/
+    SKILL.md                  # Weekly report instructions
+  feature-readiness-plan/
+    SKILL.md                  # Feature plan instructions
+    ownership-rules.md        # Owner assignment rules
+    templates/
+      private-preview.md
+      public-preview.md
+      ga.md
+  feature-readiness-hub/
+    SKILL.md                  # Hub skill instructions
+    reference-hub-template.md
 ```
 
 ---
 
 ## Step 3: Configure MCP Servers
 
-The skills depend on three MCP (Model Context Protocol) servers that connect Cursor to Jira, Confluence, and email. You configure them in `~/.cursor/mcp.json`.
+The skills depend on three MCP (Model Context Protocol) servers that connect Cursor to Jira, Confluence, and email. You configure them in a single file.
 
-### 3a. Create / edit `~/.cursor/mcp.json`
+### Where is the config file?
 
-Create the file if it does not exist:
+| Platform | Path |
+|---|---|
+| **Mac / Linux** | `~/.cursor/mcp.json` |
+| **Windows** | `C:\Users\YOUR_USERNAME\.cursor\mcp.json` |
+
+### Create or edit the file
+
+**Mac / Linux:**
 
 ```bash
 touch ~/.cursor/mcp.json
+open ~/.cursor/mcp.json
 ```
 
-Paste the following template and **replace all placeholder values** with your own credentials:
+**Windows (PowerShell):**
+
+```powershell
+if (!(Test-Path "$env:USERPROFILE\.cursor\mcp.json")) { New-Item "$env:USERPROFILE\.cursor\mcp.json" -ItemType File }
+notepad "$env:USERPROFILE\.cursor\mcp.json"
+```
+
+### Paste this template
+
+Replace all `YOUR_*` placeholder values with your own credentials:
 
 ```json
 {
@@ -125,7 +172,7 @@ Paste the following template and **replace all placeholder values** with your ow
 }
 ```
 
-### 3b. Get your credentials
+### How to get your credentials
 
 #### Jira OSS (LLM Proxy)
 
@@ -133,12 +180,26 @@ Paste the following template and **replace all placeholder values** with your ow
 |---|---|
 | `YOUR_USERNAME` | Your NetApp username (e.g. `jsmith`) |
 | `YOUR_LITELLM_KEY` | Request from the AI/OpenEng team - this is your LiteLLM proxy API key |
-| `YOUR_JIRA_BASE64_TOKEN` | Base64-encoded Jira PAT. Generate a Personal Access Token in Jira, then encode: `echo -n "YOUR_JIRA_PAT" \| base64` |
+| `YOUR_JIRA_BASE64_TOKEN` | Base64-encoded Jira PAT (see below) |
+
+**To create your Jira Base64 token:**
+
+*Mac / Linux:*
+```bash
+echo -n "YOUR_JIRA_PAT" | base64
+```
+
+*Windows (PowerShell):*
+```powershell
+[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("YOUR_JIRA_PAT"))
+```
+
+Replace `YOUR_JIRA_PAT` with your actual Jira Personal Access Token (generate one at your Jira profile settings).
 
 #### Atlassian MCP Server (Confluence)
 
-- No credentials in `mcp.json` - the Atlassian MCP server uses **OAuth browser login**.
-- On first use, Cursor will prompt you to authenticate in your browser. Click through the Atlassian OAuth flow and authorize the MCP server.
+- No credentials needed in `mcp.json` - the Atlassian MCP server uses **OAuth browser login**.
+- On first use, Cursor will prompt you to authenticate in your browser. Click through the Atlassian OAuth flow.
 - Your session is cached - you only authenticate once per session.
 
 #### SMTP
@@ -147,7 +208,7 @@ Paste the following template and **replace all placeholder values** with your ow
 |---|---|
 | `YOUR_NAME@netapp.com` | Your NetApp email address |
 
-The SMTP relay server (`scs000816612.rtp.openenglab.netapp.com:9084`) must be reachable from your network (on-prem or VPN).
+The SMTP relay server must be reachable from your network (on-prem or VPN).
 
 ---
 
@@ -157,14 +218,14 @@ Several values in the skills are specific to the original author. **You must upd
 
 ### 4a. Update your personal Confluence "Drafts" page
 
-The skills publish draft pages under your personal Confluence Drafts space. You need your own Drafts page ID.
+The feature-readiness-plan and feature-readiness-hub skills publish draft pages under your personal Confluence Drafts space.
 
 1. Go to your Confluence personal space: `https://netapp.atlassian.net/wiki/spaces/~YOUR_USERNAME/overview`
 2. Navigate to or create a **Drafts** page
 3. Copy the **page ID** from the URL (the number in the URL, e.g. `592781410`)
-4. Update these locations in the skill files:
+4. Update these values in the skill files:
 
-**In `~/.cursor/skills/feature-readiness-plan/SKILL.md`**, find and replace:
+**In `feature-readiness-plan/SKILL.md`** and **`feature-readiness-hub/SKILL.md`**, find and replace:
 
 | Find | Replace with |
 |---|---|
@@ -172,22 +233,14 @@ The skills publish draft pages under your personal Confluence Drafts space. You 
 | `429359104` (the spaceId for `~kguleria`) | Your own personal space ID |
 | `~kguleria` | `~YOUR_USERNAME` |
 
-**In `~/.cursor/skills/feature-readiness-hub/SKILL.md`**, find and replace:
-
-| Find | Replace with |
-|---|---|
-| `592781410` (the Drafts parentId) | Your own Drafts page ID |
-| `429359104` (the spaceId) | Your own personal space ID |
-| `~kguleria` | `~YOUR_USERNAME` |
-
 ### 4b. Update email address for Weekly Report
 
-In `~/.cursor/skills/Weekly-Ring/SKILL.md`, find `kiran.guleria@netapp.com` and replace with your email, or the team distribution list you want reports sent to.
+In `Weekly-Ring/SKILL.md`, find `kiran.guleria@netapp.com` and replace with your email address, or the team distribution list you want reports sent to.
 
 ### How to find your Confluence Space ID
 
-1. Open Cursor and start a chat
-2. Ask Cursor: "Use the Atlassian MCP to call `getConfluencePage` on page ID `<your Drafts page ID>`"
+1. Open Cursor and start an Agent chat
+2. Ask: "Use the Atlassian MCP to call `getConfluencePage` on page ID `<your Drafts page ID>`"
 3. The response will include `spaceId` - use that value
 
 ---
@@ -196,23 +249,23 @@ In `~/.cursor/skills/Weekly-Ring/SKILL.md`, find `kiran.guleria@netapp.com` and 
 
 After saving `mcp.json` and the skill files:
 
-1. Close Cursor completely
-2. Reopen Cursor
+1. **Close Cursor completely** (Cmd+Q on Mac, Alt+F4 on Windows)
+2. **Reopen Cursor**
 3. The MCP servers will connect automatically on launch
 
 ---
 
 ## Step 6: Verify the Setup
 
-### Test Jira connectivity
+Open Cursor Agent chat (**Cmd+L** on Mac, **Ctrl+L** on Windows) and test each connection:
 
-Open Cursor Agent chat (**Cmd+L** or **Ctrl+L**) and type:
+### Test Jira connectivity
 
 ```
 Fetch Jira issue NFSAAS-144193 and show me its summary and status
 ```
 
-You should see the issue details returned. If you get an auth error, double-check your Jira token in `mcp.json`.
+You should see the issue details. If you get an auth error, double-check your Jira token in `mcp.json`.
 
 ### Test Confluence connectivity
 
@@ -230,33 +283,9 @@ Send a test email to YOUR_NAME@netapp.com with subject "Test" and body "MCP SMTP
 
 ---
 
-## How to Use the Skills
+## Step 7: Run the Weekly Report
 
-### Create a Feature Readiness Plan
-
-In Cursor Agent chat, say:
-
-```
-Create a feature readiness plan for NFSAAS-XXXXX
-```
-
-Replace `NFSAAS-XXXXX` with the actual Jira issue key. Cursor will:
-
-1. Read the Jira issue fields (stage, dates, owners, initiative)
-2. Select the correct template (Private Preview / Public Preview / GA)
-3. Calculate milestone dates from the Customer Announcement Date
-4. Create a local draft at `~/feature-readiness-hubs/<initiative>/` or `~/feature-readiness-drafts/`
-5. Ask you to review before publishing to Confluence
-
-### Create a Feature Readiness Hub (standalone)
-
-```
-Create a feature readiness hub for initiative NFSAAS-XXXXX
-```
-
-This creates the Initiative-level parent page that feature plans are published under.
-
-### Generate the Weekly PLR Report
+In Cursor Agent chat, type:
 
 ```
 /anfplrweeklyreport
@@ -268,24 +297,28 @@ Or say:
 Generate the ANF feature readiness weekly report
 ```
 
-This fetches all feature data, creates a Confluence meeting notes page, and sends an HTML email.
+Cursor will fetch all 28 feature pages, enrich with JIRA data, create the Confluence page, and send the email.
 
 ---
 
-## Creating the Shareable Archive
+## Updating to the Latest Version
 
-To package everything for a teammate, run:
+To get the latest skills and rules from GitHub:
+
+**Mac / Linux:**
 
 ```bash
-cd ~/.cursor/skills
-tar czf ~/Desktop/anf-feature-readiness-skills.tar.gz \
-  feature-readiness-plan/ \
-  feature-readiness-hub/ \
-  Weekly-Ring/ \
-  SETUP-GUIDE.md
+curl -sL https://raw.githubusercontent.com/Guleriak/anf-feature-readiness-skills/main/install-skills.sh | bash
 ```
 
-Share `anf-feature-readiness-skills.tar.gz` with your team. They follow this guide starting from Step 1.
+**Windows (PowerShell):**
+
+```powershell
+cd "$env:USERPROFILE\.cursor\skills"
+git pull origin main
+```
+
+Or re-download the ZIP from GitHub and overwrite the folders.
 
 ---
 
@@ -297,9 +330,11 @@ Share `anf-feature-readiness-skills.tar.gz` with your team. They follow this gui
 | Jira auth fails | Regenerate your Jira PAT and re-encode to Base64 |
 | Confluence auth prompt keeps appearing | Clear browser cookies for `atlassian.com` and re-authenticate |
 | SMTP connection refused | Ensure you are on the NetApp VPN or on-prem network |
-| Skills not recognized by Cursor | Verify files are at `~/.cursor/skills/<skill-name>/SKILL.md` (exact path) |
+| Skills not recognized by Cursor | Verify files are at the correct path (see Step 2) and restart Cursor |
 | "Drafts page not found" on publish | Update the `parentId` and `spaceId` in SKILL.md to your own values (Step 4a) |
-| Dates calculated wrong | Check that the Jira issue has a `Customer Announcement Date` field populated |
+| `.cursor` folder not visible (Windows) | In File Explorer: View > Show > Hidden items |
+| `git` not found (Windows) | Install Git from [git-scm.com](https://git-scm.com/downloads) |
+| PowerShell script execution blocked | Run `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser` in PowerShell |
 
 ---
 
@@ -308,11 +343,10 @@ Share `anf-feature-readiness-skills.tar.gz` with your team. They follow this gui
 | File | Purpose |
 |---|---|
 | `~/.cursor/mcp.json` | MCP server connections (Jira, Confluence, SMTP) |
-| `~/.cursor/skills/feature-readiness-plan/SKILL.md` | Feature plan automation instructions |
-| `~/.cursor/skills/feature-readiness-plan/ownership-rules.md` | Rules for assigning owners to milestone rows |
-| `~/.cursor/skills/feature-readiness-plan/templates/*.md` | Stage templates (fetched live from Confluence) |
-| `~/.cursor/skills/feature-readiness-hub/SKILL.md` | Initiative hub page automation |
-| `~/.cursor/skills/feature-readiness-hub/reference-hub-template.md` | Offline snapshot of the hub template |
-| `~/.cursor/skills/Weekly-Ring/SKILL.md` | Weekly PLR report automation |
-| `~/feature-readiness-hubs/` | Local drafts organized by initiative |
-| `~/feature-readiness-drafts/` | Local drafts for features without an initiative |
+| `skills/Weekly-Ring/SKILL.md` | Weekly PLR report automation |
+| `skills/feature-readiness-plan/SKILL.md` | Feature plan automation |
+| `skills/feature-readiness-plan/ownership-rules.md` | Rules for assigning owners to milestone rows |
+| `skills/feature-readiness-plan/templates/*.md` | Stage templates |
+| `skills/feature-readiness-hub/SKILL.md` | Initiative hub page automation |
+| `skills/feature-readiness-hub/reference-hub-template.md` | Offline snapshot of the hub template |
+| `rules/weekly-ring-report.mdc` | Formatting consistency rules (copy to `~/.cursor/rules/`) |
