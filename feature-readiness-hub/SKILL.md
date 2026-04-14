@@ -20,7 +20,7 @@ Create an **Initiative-level** Confluence page (same structure as the ANF hub te
 
 - Do **not** publish to Confluence until the user explicitly confirms.
 - **Root**: `~/feature-readiness-hubs/`
-- **One directory per Initiative** (mirrors the hub “folder” in Confluence). **Hub markdown** is always **`index.md`** inside that directory.
+- **One directory per Initiative** (mirrors the hub "folder" in Confluence). **Hub markdown** is always **`index.md`** inside that directory.
 - **Initiative directory name**: Sanitize the **Initiative summary** from Jira for a single path segment: replace or remove characters illegal in paths (`/`, `\`, `:`, `*`, `?`, `"`, `<`, `>`, `|`, newlines); collapse whitespace; trim; you may truncate to a reasonable length (e.g. 120 chars). **Do not** put the Jira issue key in the directory name.
 - **Full path to hub draft**: `~/feature-readiness-hubs/<Initiative directory>/index.md`
 - **Feature readiness plans** for that initiative live in the **same directory** as sibling files (see **feature-readiness-plan**): `<Feature Name> Feature Readiness Plan.md` (no Jira key in filename).
@@ -34,7 +34,7 @@ Using Atlassian MCP `getJiraIssue` (or equivalent) with the provided key or id, 
 | Purpose | Typical Jira fields |
 | --- | --- |
 | Title / link | Issue key, summary, web/browse URL |
-| PLR table hints | Status, assignee; any initiative fields your org uses (e.g. program, release version, launch dates, PM/TPM) — map from real field names on the issue |
+| PLR table hints | Status, assignee; any initiative fields your org uses (e.g. program, release version, launch dates, PM/TPM) - map from real field names on the issue |
 
 If the issue cannot be loaded, **stop** and report the error.
 
@@ -55,13 +55,13 @@ Optional offline shape check: [reference-hub-template.md](reference-hub-template
 
 3. **Confluence page title** (and leading `#` title in markdown if used):  
    `_<Initiative Summary>_ - initiative readiness plan`  
-   Align with hub guidance: title like *`<name> - feature readiness plan`* — here the name is the **Initiative summary**.
+   Align with hub guidance: title like *`<name> - feature readiness plan`* - here the name is the **Initiative summary**.
 
 4. **Top of page body**: Prominent link to the Initiative, e.g.  
    `[<INITIATIVE-KEY>](https://jira.ngage.netapp.com/browse/<INITIATIVE-KEY>)`  
    (Use the site your org uses if different; **feature-readiness-plan** standard is ngage for Jira links.)
 
-5. **PLR dashboard table — JIRA column**  
+5. **PLR dashboard table - JIRA column**  
    Replace instructional placeholder text with an **executable Jira Issue/Filter macro** (not a plain-text bullet). Same contract as **feature-readiness-plan**:
    - **JQL**: `key = <Initiative Key> OR issue in linkedIssues(<Initiative Key>) ORDER BY key`
    - **Macro URL pattern**: `https://jira.ngage.netapp.com/issues/?jql=<URL-encoded JQL>`
@@ -71,7 +71,7 @@ Optional offline shape check: [reference-hub-template.md](reference-hub-template
 
 6. **Pre-fill** other PLR table cells from Jira where data exists; use `TODO` for anything unknown.
 
-7. **Structure**: Do **not** add sections that are not on the hub template. Do **not** paste Private/Public/GA **stage** template bodies into this page — those are **separate** files in the **same initiative directory** (and Confluence children) created by **feature-readiness-plan** after publish.
+7. **Structure**: Do **not** add sections that are not on the hub template. Do **not** paste Private/Public/GA **stage** template bodies into this page - those are **separate** files in the **same initiative directory** (and Confluence children) created by **feature-readiness-plan** after publish.
 
 8. **Label**: After publish, the page should carry label **`feature-tracking-ANF`** (add in Confluence UI if the API path used does not support labels).
 
@@ -97,13 +97,14 @@ User reviews the local file; apply edits; user **confirms** before publish.
 | Setting | Value |
 | --- | --- |
 | **Parent page** | **Drafts** |
-| **parentId** | Your Drafts page ID (see SETUP-GUIDE.md Step 4a) |
-| **spaceId** | Your personal space ID (see SETUP-GUIDE.md Step 4a) |
+| **parentId** | **`592781410`** |
+| **Parent URL** | https://netapp.atlassian.net/wiki/spaces/~kguleria/pages/592781410/Drafts |
+| **spaceId** | **`429359104`** (personal `~kguleria` space; confirm with `getConfluencePage` on `592781410` if this ever changes) |
 
 Use `createConfluencePage` with:
 
-- **`parentId`**: Your Drafts page ID (default) or the user-supplied parent page id.  
-- **`spaceId`**: Always use the **`spaceId` of the chosen parent page** from `getConfluencePage` on that **`parentId`** so the create call matches Confluence's space.  
+- **`parentId`**: `592781410` (default) or the user-supplied parent page id.  
+- **`spaceId`**: Always use the **`spaceId` of the chosen parent page** from `getConfluencePage` on that **`parentId`** so the create call matches Confluence's space (default parent above uses **`429359104`**).  
 - **`contentFormat`**: **`markdown`** (or ADF if required for macros; prefer the format that preserves Jira macros in your environment).  
 - Finalized **title** and **body**.
 

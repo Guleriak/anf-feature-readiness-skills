@@ -46,7 +46,7 @@ Retrieve these fields from the Jira issue:
 | Engineering Owner | Engineering Owner |
 | Product Manager | Product Manager |
 | Customer Announcement Date | Customer Announcement Date |
-| Design Owner | Design Owner (optional — leave blank if missing) |
+| Design Owner | Design Owner (optional - leave blank if missing) |
 
 ### Stop Rule After Step 1
 
@@ -113,10 +113,10 @@ For each milestone row in the template that has an offset like `T-Nw` or `T-Nd`:
 - Subtract that number of days from the Customer Announcement Date.
 - Write the resulting exact date in `M/D/YYYY` format.
 
-**Example** — Customer Announcement Date = 10/21/2026:
-- T-16w → 10/21 − 112 days = **7/1/2026**
-- T-8w → 10/21 − 56 days = **8/26/2026**
-- T-3d → 10/21 − 3 days = **10/18/2026** (Sat → moved to **10/16/2026** Fri)
+**Example** - Customer Announcement Date = 10/21/2026:
+- T-16w -> 10/21 - 112 days = **7/1/2026**
+- T-8w -> 10/21 - 56 days = **8/26/2026**
+- T-3d -> 10/21 - 3 days = **10/18/2026** (Sat -> moved to **10/16/2026** Fri)
 
 - Populate all calculated exact dates directly in the readiness table on the Confluence page.
 - If the Target Launch Date changes, **strikethrough the old dates and add new recalculated dates** next to them. Never delete old dates.
@@ -129,9 +129,9 @@ If the user stops after a **local draft only** (no publish), Step 4 may be **def
 
 Do **not** go to **Step 8** until a valid hub **`pageId`** is established (unless the user gave a **Step 4 override**):
 
-1. **Existing hub** — If the user supplies a Confluence **`pageId`** or **URL** for this initiative's hub, call `getConfluencePage` on that page to confirm it exists; record **`hubPageId`** and the hub's **`spaceId`** (from the same response).
-2. **Discover hub** — If not supplied, search Confluence (e.g. CQL by title matching the initiative summary or other team conventions) or ask the user for the hub **`pageId`**/URL when search is inconclusive.
-3. **Create hub** — If no hub exists, execute **feature-readiness-hub** for the **`Initiative Key`**: local hub at `~/feature-readiness-hubs/<Initiative directory>/index.md`, user review, user confirms publish (default parent: personal **Drafts** per that skill), then capture the new **`hubPageId`** and **`spaceId`** from the create response or `getConfluencePage`.
+1. **Existing hub** - If the user supplies a Confluence **`pageId`** or **URL** for this initiative's hub, call `getConfluencePage` on that page to confirm it exists; record **`hubPageId`** and the hub's **`spaceId`** (from the same response).
+2. **Discover hub** - If not supplied, search Confluence (e.g. CQL by title matching the initiative summary or other team conventions) or ask the user for the hub **`pageId`**/URL when search is inconclusive.
+3. **Create hub** - If no hub exists, execute **feature-readiness-hub** for the **`Initiative Key`**: local hub at `~/feature-readiness-hubs/<Initiative directory>/index.md`, user review, user confirms publish (default parent: personal **Drafts** per that skill), then capture the new **`hubPageId`** and **`spaceId`** from the create response or `getConfluencePage`.
 
 **When `Initiative Key` is missing:** Skip Step 4 entirely; **Step 8** uses **Personal Drafts** as the publish parent.
 
@@ -210,9 +210,10 @@ When publishing to Confluence, create the page as a child under one of the follo
 
 **B) Personal Drafts (default when Initiative Key is missing)**  
 - Parent page: `Drafts`  
-- Parent URL: `https://netapp.atlassian.net/wiki/spaces/~<YOUR_USERNAME>/pages/<YOUR_DRAFTS_PAGE_ID>/Drafts`  
-- Set `parentId` to your Drafts page ID (see SETUP-GUIDE.md Step 4a).  
-- Set `spaceId` to your personal space ID (see SETUP-GUIDE.md Step 4a).
+- Parent URL: `https://netapp.atlassian.net/wiki/spaces/~kguleria/pages/592781410/Drafts`  
+- Parent page ID: `592781410`  
+- Set `parentId` to `592781410`.  
+- Set `spaceId` to the **Drafts** page's space (currently **`429359104`** for `~kguleria` - always confirm with `getConfluencePage` on `592781410` before publish in case it changes).
 
 **C) User-specified parent (override only)**  
 - If the user explicitly requests a different **`parentId`** or **URL** (e.g. publish this feature plan directly under **Drafts**, or under **Features - Project Plans**), publish **there** instead of **A** or **B**.  

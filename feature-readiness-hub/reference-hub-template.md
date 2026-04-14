@@ -1,6 +1,6 @@
-# [Template] Feature Readiness Plan — reference snapshot
+# [Template] Feature Readiness Plan - reference snapshot
 
-Source: [Template] Feature Readiness Plan — `https://netapp.atlassian.net/wiki/spaces/ANF/pages/138160611/Template+Feature+Readiness+Plan`
+Source: [Template] Feature Readiness Plan - `https://netapp.atlassian.net/wiki/spaces/ANF/pages/138160611/Template+Feature+Readiness+Plan`
 
 Refresh this snapshot with `getConfluencePage` (`pageId` `138160611`, `contentFormat` `markdown`) when Confluence diverges.
 
@@ -8,7 +8,7 @@ Refresh this snapshot with `getConfluencePage` (`pageId` `138160611`, `contentFo
 
 **How to Use this Template**
 
-*(Remove this entire block in generated hub drafts — see SKILL.md.)*
+*(Remove this entire block in generated hub drafts - see SKILL.md.)*
 
 ---
 
