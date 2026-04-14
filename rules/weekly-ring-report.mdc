@@ -1,0 +1,272 @@
+---
+description: Formatting and consistency rules for the ANF PLR Weekly Report (Weekly-Ring skill and anf_plr_report.py automation)
+globs: "**/anf-plr-weekly-report/**,**/Weekly-Ring/**"
+alwaysApply: false
+---
+
+# ANF PLR Weekly Report - Formatting Standards
+
+These rules enforce visual consistency every time the report is generated, whether by the Cursor skill or the Python automation. Every rule below is **mandatory** and must be followed exactly. Do not improvise, rephrase, reorder, or omit any element.
+
+## 0. Report Structure - Exact Page Layout (Top to Bottom)
+
+Every report (Confluence page and HTML email) MUST follow this exact section order. Do not add, remove, rename, or reorder sections.
+
+### Section 1: Title
+- Confluence: `## ANF Feature Readiness Weekly Report - MM/DD/YYYY`
+- Email subject: `ANF Feature Readiness Weekly Report - MM/DD/YYYY`
+
+### Section 2: Intro Paragraph
+Exact text (verbatim every run):
+> Thank you for joining the Feature readiness sync meeting. The team can reply to this email thread as a follow up on the open items and/or update the Feature Readiness Plans listed on [Product Launch Readiness (PLR) - Dashboard](https://netapp.atlassian.net/wiki/spaces/CLOUDVOL/pages/584352624).
+
+Followed by:
+> Weekly status of features tracked on the [PLR Dashboard](https://netapp.atlassian.net/wiki/spaces/CLOUDVOL/pages/584352624). NN features included; NN excluded (see below). Data sourced from JIRA and Confluence.
+
+### Section 3: Key Highlights This Week
+Heading: `### Key Highlights This Week` (exact text, never vary)
+
+Must contain exactly these 5 bullet categories in this order:
+1. `- **Launching Today (M/DD):** ...` or `- **Launching This Week:** ...` (only if launches exist)
+2. `- **At Risk:** ...` (features with "at risk" or "risk" in status)
+3. `- **Blocked:** ...` (features with "blocked" in status)
+4. `- **Delayed:** ...` (features with "delay" or "delayed" in status)
+5. `- **Excluded:** ...` (features removed by Hard Stop Rule, with JIRA key and reason)
+
+If a category has no features, omit that bullet entirely. Never add extra categories.
+
+### Section 4: Key Actions & Watch Items
+Heading: `### Key Actions & Watch Items` (exact text)
+
+Empty table with headers only:
+```
+| # | Action Item | Owner | Due Date | Status |
+|---|-------------|-------|----------|--------|
+```
+Never auto-populate rows.
+
+### Section 5: Feature Status Overview
+Heading: `### Feature Status Overview (NN Features)` (exact text, NN = count)
+
+The full feature table with all 11 columns (see Column Order below).
+
+### Confluence-Specific Rules
+- Always use `contentFormat: "markdown"` when calling `updateConfluencePage` or `createConfluencePage`. NEVER use `"storage"` or `"adf"` - storage format causes raw HTML to render as plain text.
+- Use `---` horizontal rules between sections.
+
+### Email-Specific Rules
+- Include a callout box (light blue background `#E6F3FF`, left blue border `4px solid #0052CC`) linking to the Confluence meeting notes page, placed between intro and feature table.
+- Footer with links to PLR Dashboard and Confluence meeting notes page. Use `<p>` tags, never `<ul>/<li>`.
+
+## 0a. Feature Table - Exact Column Order (11 Columns)
+
+The feature table MUST always have exactly these 11 columns in this exact order. Never add, remove, rename, or reorder columns.
+
+| Position | Column Header (exact) | Source |
+|----------|----------------------|--------|
+| 1 | Status | PLR Page Properties "Status" column. Color-coded with emoji. |
+| 2 | Stage | JIRA `customfield_22400`, fallback PLR page |
+| 3 | Feature Name | JIRA `customfield_29903`, fallback PLR "Public facing Name", last resort page title (cleaned) |
+| 4 | JIRA | JIRA Key Mapping table (clickable link) |
+| 5 | JIRA Status | JIRA API `status` field |
+| 6 | Tier | JIRA `customfield_29902`, fallback PLR "Tier" |
+| 7 | Launch Target | JIRA `customfield_25618`, fallback PLR "Launch Date". Single date M/DD/YYYY or "TBD". |
+| 8 | Release Version | JIRA `customfield_20602`, fallback PLR. Single highest version. |
+| 9 | Owners | JIRA custom fields. Format: `PM: <name> / TME: <name> / TPM: <name>` (always this exact format) |
+| 10 | Status Summary | Three-bullet format (see Rule 9) |
+| 11 | Notes | Always empty (for manual meeting notes) |
+
+## 0b. Sort Order
+
+1. Sort all features by **Launch Target date ascending** (earliest first).
+2. Features with `TBD` as launch date: place them **after the last dated feature that shares the same Stage**, or at the end if no stage match. Keep TBD features grouped together at the natural position.
+3. Tie-breaker for same date: alphabetical by Feature Name.
+
+## 0c. Feature Name Cleaning
+
+- Strip stage suffixes in parentheses: "(GA)", "(Public Preview)", "(Private Preview)", "(PuP)", "(PrP)".
+- Strip "Azure NetApp Files" prefix if present (keep the distinctive part).
+- The Stage column already conveys the stage, so the name must not duplicate it.
+
+## 0d. Owners Format
+
+Always: `PM: <Full Name> / TME: <Full Name> / TPM: <Full Name>`
+- Use full display names resolved from JIRA user profiles.
+- If a role is empty in JIRA, show `PM: TBD` (or TME/TPM as applicable).
+- Never abbreviate names. Never change the separator format.
+
+## 0e. Status Emoji Mapping (Confluence/Markdown)
+
+Use these exact emoji prefixes in the Status column for Confluence pages. Always include the text label after the emoji.
+
+| Emoji | Keywords (case-insensitive, priority order) |
+|-------|---------------------------------------------|
+| Red circle | "blocked" |
+| Red circle | "at risk", "risk" |
+| Orange circle | "delay", "delayed" |
+| Green circle | "on track", "in progress", "done", "complete", "launched", "announced" |
+| White circle | "not started", "scoped" |
+| Yellow circle | "pending" |
+
+If no keyword matches, no emoji prefix - just the raw status text.
+Match keywords in the priority order listed (e.g., "at risk" takes priority over "on track" if both appear).
+
+## 1. Font Size - 10px for ALL Data
+
+- **Header cells (`<th>`)**: `font-size:10px;`
+- **Data cells (`<td>`)**: `font-size:10px;`
+- **Body text outside tables**: `font-size:12px;` (intro, callout, footer)
+- Never use 11px, 13px, or any other size in data cells.
+
+## 2. Status Column - Consistent Color Mapping
+
+Every status value MUST map to a color. Matching is case-insensitive and uses substring/keyword detection. Apply in this priority order:
+
+| Keywords in status text | Color style | Display label |
+|---|---|---|
+| "blocked" | `color:#BF2600;` | Blocked |
+| "at risk", "risk" | `color:#BF2600;` | At Risk |
+| "delay", "delayed" | `color:#FF8B00;` | Delay |
+| "on track", "in progress" | `color:#006644;` | On Track |
+| "done", "complete", "launched", "ga - launched", "announced" | `color:#006644;` | Done/Launched |
+| "not started", "scoped" | `color:#666666;` | Not Started |
+| "pending" | `color:#B38600;` | Pending |
+
+All status text MUST be `font-weight:bold;`. If no keyword matches, default to `color:#333; font-weight:bold;`.
+
+### Common misspellings to handle
+
+Map "Launced" to "Launched", "Privew" to "Preview". Normalize before color lookup.
+
+## 3. Launch Target Date - Single Clean Date Only
+
+The Launch Target column must show **one date only** - the most current/relevant launch date.
+
+Rules:
+- If JIRA `customfield_25618` (Customer Announcement Date) has a value, use it. Format: `M/DD/YYYY`.
+- If the Confluence cell contains multiple dates (e.g., "6/03/2026 5/20/2026 4/23/2026"), extract and display only the **latest (most future) date**.
+- Strip stage labels ("Private Preview", "Public Preview"), descriptive text ("Target Launch Date:", "Our target to announce..."), and historical dates.
+- If only "TBD" remains, display "TBD".
+
+## 4. Column Widths - Compact Layout (11 Columns)
+
+Use `table-layout:fixed;` with these widths. Must total 100% and match the 11-column order from Rule 0a.
+
+| Column | Width |
+|---|---|
+| Status | 7% |
+| Stage | 5% |
+| Feature Name | 13% |
+| JIRA | 5% |
+| JIRA Status | 5% |
+| Tier | 3% |
+| Launch Target | 6% |
+| Release Version | 6% |
+| Owners | 14% |
+| Status Summary | 26% |
+| Notes | 10% |
+
+## 5. Cell Padding - Tight
+
+- **Data cells**: `padding:3px 4px;` (not 5px 6px)
+- **Header cells**: `padding:4px 4px;`
+- Always include `vertical-align:top;` and `word-wrap:break-word;overflow-wrap:break-word;`
+
+## 6. Row Backgrounds
+
+- All data rows: `background-color:white;` - no alternating colors.
+- Header row: `background-color:#0052CC; color:white;`
+
+## 7. All CSS Must Be Inline
+
+Never use `<style>` blocks. Every element must carry its full style in the `style=""` attribute so forwarded/replied emails keep formatting.
+
+## 8. Release Version - Clean Up
+
+If the Release Version cell contains multiple version numbers (e.g., "2618.0.0+ANF 2614.0.0+ANF 2612.0.0+ANF"), show only the **latest (highest)** version number.
+
+## 9. Status Summary - Three-Bullet Format
+
+The Status Summary column must present information in exactly **three bullet points**, extracted from the raw Confluence/JIRA data:
+
+- **Feature Onboarding:** Percentage complete and key onboarding milestones (e.g., "Feature Onboarding: 90%. CSS signoff received.")
+- **Cloud Service 360:** CLC/CS360 checklist progress for the current stage (e.g., "CS360: GA 72%. SDK/CLI release 5-May.")
+- **Dev Work:** Any other notable development update - risks, blockers, CCOA impact, Terraform status, dependencies, portal changes, etc. (e.g., "Dev Work: CCOA impact. MSFT fix pending.")
+
+### Extraction rules
+
+1. Parse the raw Status Summary text for onboarding percentage (`Feature Onboarding XX%`, `Feature onboarding XX%`, or `Onboarding XX%`), CLC/CS360 percentages (`CLC.*XX%`), and remaining context.
+2. If onboarding info is missing, show "Feature Onboarding: N/A".
+3. If CLC/CS360 info is missing, show "CS360: N/A".
+4. Everything else goes into the Dev Work bullet. If nothing remains, show "Dev Work: On track."
+5. Strip Confluence artifacts: UUIDs, checklist markers ("1 ef31800ea7e6 incomplete"), and excess whitespace before rendering.
+
+### Rendering
+
+- In **Confluence (markdown)**: Use a line-break-separated format inside the table cell: `**Feature Onboarding:** ... <br/> **CS360:** ... <br/> **Dev Work:** ...`
+- In **HTML email**: Use `<br/>` within the `<td>` cell. Do NOT use `<ul>/<li>` (Outlook breaks list spacing).
+
+## 10. Cross-Platform Email Rendering (Mac + PC + Forward + Reply + Edit)
+
+The email MUST look identical on Outlook for Windows (Word engine), Outlook for Mac, Apple Mail, Gmail web, and when forwarded/replied/edited by any recipient. Follow every sub-rule below.
+
+### 10a. Font Stack - Repeat on Every Element
+
+Use `font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif;` and it MUST appear on:
+- `<body>`, every `<p>`, every `<td>`, every `<th>`, every `<a>`, every `<div>`, every `<h2>`.
+- Do NOT rely on inheritance from `<body>`. Outlook strips inherited fonts on reply/forward.
+
+### 10b. HTML Table Attributes (Outlook Word Engine)
+
+Outlook for Windows ignores CSS-only table styling. Every `<table>` must include:
+
+```html
+<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="...">
+```
+
+These HTML attributes survive Outlook's Word engine where pure CSS fails.
+
+### 10c. Explicit Line Height
+
+Every `<td>`, `<th>`, and `<p>` must include `line-height:1.4;mso-line-height-rule:exactly;`. The `mso-` prefix is an Outlook-specific CSS extension that prevents Outlook from overriding line spacing.
+
+### 10d. No `<ul>` / `<li>` in Main Content
+
+Outlook adds unpredictable spacing to list elements. Use `<p>` or `<br/>` for link lists in the footer. If `<ul>/<li>` is unavoidable, set explicit `margin`, `padding`, and `line-height` on each `<li>`.
+
+### 10e. MSO Conditional Wrapper
+
+Wrap the `<html>` tag with the Microsoft Office XML namespace so Outlook recognises `mso-*` properties:
+
+```html
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+```
+
+### 10f. `bgcolor` HTML Attribute as Backup
+
+On every `<td>` add `bgcolor="#ffffff"` alongside `background-color:white;`. On header `<th>` add `bgcolor="#0052CC"`. Outlook reads `bgcolor` when it ignores CSS background-color on forward/reply.
+
+### 10g. Explicit Width on `<table>`
+
+Add `width="100%"` as an HTML attribute in addition to the CSS `width:100%;`.
+
+### 10h. No Shorthand CSS
+
+Never use shorthand like `border:1px solid #ddd;` without also setting `border-collapse:collapse;` on the table. Always set `margin:0;padding:0;` on `<body>` and each `<p>` unless a specific value is needed.
+
+### 10i. Emoji Fallback
+
+Status emoji (circles, checkmark) render differently on Windows vs Mac. Always include the text label after the emoji so the meaning is clear even if the emoji renders as a square on older Outlook.
+
+## 11. Actions / Open Items Table - Empty by Default
+
+The "Key Actions & Watch Items" table must be generated with **headers only and no data rows**. Do NOT auto-populate action items from feature data. Action items are manually added after the meeting.
+
+Generate:
+
+```
+| # | Action Item | Owner | Due Date | Status |
+|---|-------------|-------|----------|--------|
+```
+
+No pre-filled rows.

@@ -24,7 +24,7 @@ The PLR Dashboard (Page ID `584352624`) uses dynamic Page Properties Report macr
 
 #### CRITICAL: Page Properties Table is HORIZONTAL
 
-The Confluence Page Properties macro renders as a **horizontal table** — headers in row 1, values in row 2:
+The Confluence Page Properties macro renders as a **horizontal table** - headers in row 1, values in row 2:
 
 ```
 | Status | Public facing Name | Release Version | Tier | Launch Date | Docs | Status Summary | JIRA |
@@ -32,16 +32,16 @@ The Confluence Page Properties macro renders as a **horizontal table** — heade
 | <value> | <value>          | <value>         | <value> | <value>  | <value> | <value>     | <value> |
 ```
 
-**DO NOT** treat it as a vertical key-value table (key in col 0, value in col 1) — that returns wrong data (e.g., "Status" → "Public facing Name").
+**DO NOT** treat it as a vertical key-value table (key in col 0, value in col 1) - that returns wrong data (e.g., "Status" -> "Public facing Name").
 
 Extract from each page's properties table:
-- **Feature Name** → "Public facing Name" column (prefer JIRA `customfield_29903` as primary source)
-- **Status** → "Status" column (contains Atlassian status macro, e.g., "GA - on track")
-- **Tier** → Prefer JIRA `customfield_29902`, fallback to "Tier" column
-- **Launch Date** → Prefer JIRA `customfield_25618`, fallback to "Launch Date" column
-- **Release Version** → Prefer JIRA `customfield_20602`, fallback to "Release Version" column
-- **Status Summary** → "Status Summary" column (detailed progress text)
-- **Supportability Status** — CSS/supportability progress text (may be in a separate section)
+- **Feature Name** -> "Public facing Name" column (prefer JIRA `customfield_29903` as primary source)
+- **Status** -> "Status" column (contains Atlassian status macro, e.g., "GA - on track")
+- **Tier** -> Prefer JIRA `customfield_29902`, fallback to "Tier" column
+- **Launch Date** -> Prefer JIRA `customfield_25618`, fallback to "Launch Date" column
+- **Release Version** -> Prefer JIRA `customfield_20602`, fallback to "Release Version" column
+- **Status Summary** -> "Status Summary" column (detailed progress text)
+- **Supportability Status** - CSS/supportability progress text (may be in a separate section)
 
 #### Hard Stop Rule (Do Not Continue Past Step 1)
 
@@ -59,7 +59,7 @@ When this rule is triggered:
 
 ### Step 2: Extract JIRA IDs from PLR Dashboard
 
-**IMPORTANT**: Use the **JIRA Key Mapping** table below as the primary source for JIRA IDs. Do NOT search JIRA by summary — feature names in Confluence often differ from JIRA summaries.
+**IMPORTANT**: Use the **JIRA Key Mapping** table below as the primary source for JIRA IDs. Do NOT search JIRA by summary - feature names in Confluence often differ from JIRA summaries.
 
 The JIRA column on PLR pages uses Jira Legacy macros that do NOT render in markdown format. The mapping table was extracted from the ADF (raw) format of each page.
 
@@ -79,25 +79,37 @@ For each JIRA ID extracted in Step 2:
 ### Step 4: Fetch Owners from JIRA Custom Fields
 
 For each JIRA issue, fetch these multi-user picker custom fields:
-- **PM Feature Owner** — search JIRA fields for "PM Feature Owner" to find the custom field ID
-- **TME Feature Owner** — search JIRA fields for "TME Feature Owner"
-- **TPM Feature Owner** — search JIRA fields for "TPM Feature Owner"
+- **PM Feature Owner** - search JIRA fields for "PM Feature Owner" to find the custom field ID
+- **TME Feature Owner** - search JIRA fields for "TME Feature Owner"
+- **TPM Feature Owner** - search JIRA fields for "TPM Feature Owner"
 
 For each field:
 - Extract the username/account ID
 - Resolve to display name using `jira_get_user_profile`
 - Combine into a single column: `PM: <name> / TME: <name> / TPM: <name>`
 
-### Step 5: Combine Status Summary + Supportability Status
+### Step 5: Format Status Summary as Three Bullets
 
-Merge both PLR Dashboard columns into one **Status Summary** column:
-- Format: `<Status Summary text>. **Supportability:** <Supportability Status text>`
-- If Supportability Status is empty or N/A, show only the Status Summary
+Parse the raw Status Summary text from PLR pages and present it as exactly **three structured bullets**:
+
+1. **Feature Onboarding:** Onboarding percentage and key milestones (CSS signoff, deep dive, etc.)
+2. **Cloud Service 360 (CS360):** CLC/CS360 checklist progress for the current stage, SDK/CLI status, Terraform status
+3. **Dev Work:** Everything else - risks, blockers, CCOA impact, dependencies, portal changes, supportability status
+
+Extraction rules:
+- Look for `Feature Onboarding XX%` or `Onboarding XX%` patterns for bullet 1. If absent, show "N/A".
+- Look for `CLC.*XX%` patterns for bullet 2. Include SDK, CLI, Terraform status here. If absent, show "N/A".
+- Everything remaining goes into bullet 3. If nothing remains, show "On track."
+- Strip Confluence artifacts (UUIDs, checklist markers, excess whitespace) before rendering.
+
+Rendering:
+- **Confluence markdown**: `**Feature Onboarding:** ... <br/> **CS360:** ... <br/> **Dev Work:** ...` inside table cells
+- **HTML email**: Use `<br/>` within `<td>`. Do NOT use `<ul>/<li>` (Outlook breaks list spacing).
 
 ### Step 6: Build the Table
 
 - Sort all features by **Launch Target date ascending**
-- **Remove stage suffixes** from Feature Name (e.g., "Azure NetApp Files advanced ransomware protection (GA)" → "Azure NetApp Files advanced ransomware protection"). The Stage column already shows this info.
+- **Remove stage suffixes** from Feature Name (e.g., "Azure NetApp Files advanced ransomware protection (GA)" -> "Azure NetApp Files advanced ransomware protection"). The Stage column already shows this info.
 - Columns (in this exact order):
 
 | # | Column | Source (Priority Order) |
@@ -128,35 +140,55 @@ Merge both PLR Dashboard columns into one **Status Summary** column:
 - Page structure (top to bottom):
   1. Intro: "Thank you for joining the Feature readiness sync meeting. The team can reply to this email thread as a follow up on the open items and/or update the Feature Readiness Plans listed on Product Launch Readiness (PLR) - Dashboard."
   2. Link to PLR Dashboard (`https://netapp.atlassian.net/wiki/spaces/CLOUDVOL/pages/584352624`)
-  3. **Actions / Open Items** editable table: #, Action Item, Owner, Due Date, Status
-  4. **Feature Status Summary** — the full feature table with all 11 columns (same order as Step 6)
+  3. **Actions / Open Items** - empty editable table with headers only: #, Action Item, Owner, Due Date, Status. Do NOT auto-populate rows; these are manually added after the meeting.
+  4. **Feature Status Summary** - the full feature table with all 11 columns (same order as Step 6)
 
 ### Step 8: Send HTML Email
 
-- **Default recipients**: Update with your email or team distribution list
-- **Subject**: `ANF Feature Readiness Weekly Report – MM/DD/YYYY`
+- **Default recipients**: `kiran.guleria@netapp.com` (ask user if more needed)
+- **Subject**: `ANF Feature Readiness Weekly Report - MM/DD/YYYY`
 - **HTML body** must include:
   - Thank-you intro with link to PLR Dashboard
   - Prominent callout box linking to the Confluence meeting notes page (light blue background, left blue border)
-  - Actions / Open Items table
+  - Actions / Open Items table (empty, headers only - manually filled after meeting)
   - **Full feature table embedded** (not just a link) with same column order as Step 6
   - Links to PLR Dashboard and Confluence meeting notes page at the bottom
 - Use the SMTP MCP `smtp_send_email` tool with `is_html: true`
 
-#### Email Formatting Rules (IMPORTANT)
+#### Email Formatting Rules (IMPORTANT - see also `.cursor/rules/weekly-ring-report.mdc`)
 
-1. **All CSS must be inline** — do NOT use `<style>` blocks. Every HTML element must have its styles in the `style=""` attribute. This prevents formatting loss when recipients forward or reply.
-2. **All table rows must have white background** — no alternating row colors. Every `<td>` must include `background-color:white;`.
-3. **Header row**: `background-color:#0052CC; color:white; font-size:11px;`
-4. **Data cells**: `padding:5px 6px; border:1px solid #ddd; font-size:11px; vertical-align:top; background-color:white;`
-5. **Status column** uses colored text (not background):
-   - On Track: `color:#006644; font-weight:bold;`
-   - At Risk: `color:#FF8B00; font-weight:bold;`
-   - Delay: `color:#DE350B; font-weight:bold;`
-   - Blocked: `color:#BF2600; font-weight:bold;`
+1. **All CSS must be inline** - do NOT use `<style>` blocks. Every HTML element must have its styles in the `style=""` attribute. This prevents formatting loss when recipients forward or reply.
+2. **All table rows must have white background** - no alternating row colors. Every `<td>` must include `background-color:white;`.
+3. **Font size 10px everywhere in tables**:
+   - **Header row**: `background-color:#0052CC; color:white; font-size:10px; padding:4px 4px;`
+   - **Data cells**: `padding:3px 4px; border:1px solid #ddd; font-size:10px; vertical-align:top; background-color:white;`
+4. **Status column** - color ALL statuses (case-insensitive keyword match, priority order):
+   - "blocked" -> `color:#BF2600; font-weight:bold;`
+   - "at risk", "risk" -> `color:#BF2600; font-weight:bold;`
+   - "delay", "delayed" -> `color:#FF8B00; font-weight:bold;`
+   - "on track", "in progress" -> `color:#006644; font-weight:bold;`
+   - "done", "complete", "launched", "announced" -> `color:#006644; font-weight:bold;`
+   - "not started", "scoped" -> `color:#666; font-weight:bold;`
+   - "pending" -> `color:#B38600; font-weight:bold;`
+   - Handle typos: "Launced" -> "Launched", "Privew" -> "Preview"
+   - Default fallback: `color:#333; font-weight:bold;`
+5. **Launch Target date** - show **one clean date** only (M/DD/YYYY). If cell has multiple dates, pick the latest future date. Strip stage labels and descriptive text.
 6. **JIRA links**: `color:#0052CC; text-decoration:none;`
-7. **Table**: `border-collapse:collapse; width:100%;`
-8. **Body font**: `font-family:Segoe UI,Arial,sans-serif; font-size:13px;`
+7. **Table**: `border-collapse:collapse; width:100%; table-layout:fixed;`
+8. **Body font**: `font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px;`
+9. **Column widths**: Status 7%, Feature Name 15%, JIRA 6%, Tier 3%, Launch Target 6%, Release Version 6%, Risk/Impact/Delay 10%, Status Summary 30%, Owners 17%.
+
+#### Cross-Platform Rendering Rules (Mac + PC + Forward/Reply/Edit)
+
+The email MUST look identical on Outlook for Windows, Outlook for Mac, Apple Mail, Gmail, and when forwarded/replied/edited. These rules prevent formatting breakage:
+
+1. **Font-family on EVERY element** - set `font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif;` on `<body>`, every `<p>`, every `<td>`, every `<th>`, every `<h2>`, every `<a>`, every `<div>`. Do NOT rely on `<body>` inheritance (Outlook strips it on reply/forward).
+2. **HTML table attributes** - every `<table>` must include `cellpadding="0" cellspacing="0" border="0" width="100%" role="presentation"` as HTML attributes alongside the CSS `style`. Outlook Windows uses Word's engine which ignores CSS-only table styling.
+3. **`bgcolor` HTML attribute** - add `bgcolor="#ffffff"` on every `<td>`, `bgcolor="#0052CC"` on every `<th>`. Outlook reads `bgcolor` when it drops CSS `background-color` on forward.
+4. **Explicit line-height** - every `<td>`, `<th>`, `<p>` must include `line-height:1.4;mso-line-height-rule:exactly;`. The `mso-` prefix controls Outlook-specific rendering.
+5. **MSO namespace** - `<html>` tag must include `xmlns:o="urn:schemas-microsoft-com:office:office"` so Outlook recognizes `mso-*` properties.
+6. **No `<ul>/<li>` in footer** - use `<p>` tags instead. Outlook adds unpredictable spacing to list elements.
+7. **Emoji + text labels** - always include the text label after status emoji because emoji render differently (or as squares) across Outlook versions.
 
 ## Key IDs
 
@@ -183,7 +215,7 @@ Merge both PLR Dashboard columns into one **Status Summary** column:
 
 The JIRA keys below were extracted from Jira Legacy macros in the ADF format of each PLR page. The **primary key** (first listed) is used in the report. Additional keys are for other feature stages.
 
-> **Note**: Jira Legacy macros do NOT render in markdown format — the JIRA column appears blank or shows only stage text. These keys were extracted from ADF format and should be used as the authoritative source. When a new feature is added, fetch its page in ADF format and search for `jqlQuery` to find the embedded JIRA key.
+> **Note**: Jira Legacy macros do NOT render in markdown format - the JIRA column appears blank or shows only stage text. These keys were extracted from ADF format and should be used as the authoritative source. When a new feature is added, fetch its page in ADF format and search for `jqlQuery` to find the embedded JIRA key.
 
 | # | Feature | Page ID | Primary JIRA Key | Additional JIRA Keys |
 |---|---------|---------|-----------------|---------------------|
@@ -214,7 +246,7 @@ The JIRA keys below were extracted from Jira Legacy macros in the ADF format of 
 | 25 | ANF Origin Volumes | 138165494 | NFSAAS-47957 | |
 | 26 | Hybrid Replication DR | 138163049 | NFSAAS-151267 | |
 | 27 | Content Distribution / ANF distributed namespaces | 138159977 | NFSAAS-105262 | NFSAAS-131023 |
-| 28 | ANF extension for AKS (Trident) | 138163671 | NFSAAS-77386 | Plan table has no Tier — tier from Jira `customfield_29902` |
+| 28 | ANF extension for AKS (Trident) | 138163671 | NFSAAS-77386 | Plan table has no Tier - tier from Jira `customfield_29902` |
 
 ## Automation
 
