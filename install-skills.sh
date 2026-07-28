@@ -11,6 +11,7 @@ SKILL_FOLDERS=(
   "Weekly-Ring"
   "feature-readiness-hub"
   "feature-readiness-plan"
+  "anf-functional-spec"
 )
 EXTRA_FILES=(
   "SETUP-GUIDE.md"
@@ -73,7 +74,7 @@ for folder in "${SKILL_FOLDERS[@]}"; do
     rm -rf "$SKILLS_DIR/$folder"
     cp -R "$TMPDIR_CLONE/$folder" "$SKILLS_DIR/$folder"
   else
-    warn "Skill folder '$folder' not found in repo � skipped"
+    warn "Skill folder '$folder' not found in repo – skipped"
   fi
 done
 
