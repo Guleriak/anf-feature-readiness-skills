@@ -1,6 +1,6 @@
 # ANF Feature Readiness Skills - Setup Guide (Mac + PC)
 
-This guide walks you through installing and configuring the Cursor AI skills that automate Feature Readiness Plans, Initiative Hubs, and the Weekly PLR Report. Works on **macOS, Windows, and Linux**.
+This guide walks you through installing and configuring the Cursor AI skills that automate Feature Readiness Plans, Initiative Hubs, the Weekly PLR Report, and the Functional Spec Approval Tracker. Works on **macOS, Windows, and Linux**.
 
 ---
 
@@ -11,6 +11,7 @@ This guide walks you through installing and configuring the Cursor AI skills tha
 | **Weekly-Ring** | Generates the weekly PLR meeting report - Confluence page + HTML email with the full feature table | Type `/anfplrweeklyreport` or ask Cursor to generate the weekly report |
 | **feature-readiness-plan** | Creates a Feature Readiness Plan (Private Preview / Public Preview / GA) from a Jira issue, calculates milestone dates, populates owners, publishes to Confluence | Give Cursor a Jira issue key that has a Feature Stage |
 | **feature-readiness-hub** | Creates an Initiative-level parent page in Confluence that groups all feature plans under one initiative | Automatically invoked by feature-readiness-plan when an Initiative Key exists, or run standalone |
+| **anf-functional-spec** | Builds/updates the ANF Functional Spec & Approval Tracker on Confluence - pending CSA/MSFT approvers, cycle-time metrics, Done/In Progress/At Risk status, optional email digest | Type `/anftracker` or ask Cursor to build/update the functional spec tracker |
 
 ---
 
@@ -88,6 +89,7 @@ git clone https://github.com/Guleriak/anf-feature-readiness-skills.git "$env:USE
    - `Weekly-Ring`
    - `feature-readiness-plan`
    - `feature-readiness-hub`
+   - `anf-functional-spec`
 
 > **Tip**: The `.cursor` folder may be hidden. In File Explorer, click **View > Show > Hidden items** to see it.
 
@@ -112,6 +114,9 @@ skills/
   feature-readiness-hub/
     SKILL.md                  # Hub skill instructions
     reference-hub-template.md
+  anf-functional-spec/
+    SKILL.md                  # Functional spec tracker instructions
+    reference.md              # Sample JQL, custom-field map, username cache
 ```
 
 ---
@@ -237,6 +242,10 @@ The feature-readiness-plan and feature-readiness-hub skills publish draft pages 
 
 In `Weekly-Ring/SKILL.md`, find `kiran.guleria@netapp.com` and replace with your email address, or the team distribution list you want reports sent to.
 
+### 4c. anf-functional-spec needs no personalization
+
+Unlike the two skills above, `anf-functional-spec` has no hardcoded personal page/space IDs - it defaults to publishing under **your own** personal Confluence space and auto-derives its feature set from the shared PLR Dashboard (page `138147845`). Nothing to edit here; just run it and confirm the target page it proposes on first use.
+
 ### How to find your Confluence Space ID
 
 1. Open Cursor and start an Agent chat
@@ -301,6 +310,24 @@ Cursor will fetch all 28 feature pages, enrich with JIRA data, create the Conflu
 
 ---
 
+## Step 7b: Run the Functional Spec Tracker
+
+In Cursor Agent chat, type:
+
+```
+/anftracker
+```
+
+Or say:
+
+```
+Build the ANF functional spec approval tracker
+```
+
+Cursor will auto-derive the current feature set from the PLR Dashboard, pull CSA approval and Microsoft FS-review tickets from Jira, classify each feature Done / In Progress / At Risk, and publish a color-coded table to your personal Confluence space (updating the existing tracker page on repeat runs). Say "email me an at-risk summary" if you also want the exec email view.
+
+---
+
 ## Updating to the Latest Version
 
 To get the latest skills and rules from GitHub:
@@ -349,4 +376,6 @@ Or re-download the ZIP from GitHub and overwrite the folders.
 | `skills/feature-readiness-plan/templates/*.md` | Stage templates |
 | `skills/feature-readiness-hub/SKILL.md` | Initiative hub page automation |
 | `skills/feature-readiness-hub/reference-hub-template.md` | Offline snapshot of the hub template |
+| `skills/anf-functional-spec/SKILL.md` | Functional spec approval tracker automation |
+| `skills/anf-functional-spec/reference.md` | Sample JQL, custom-field map, username cache |
 | `rules/weekly-ring-report.mdc` | Formatting consistency rules (copy to `~/.cursor/rules/`) |
