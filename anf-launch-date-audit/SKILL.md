@@ -353,15 +353,26 @@ The intended cadence is **every Monday at 8:00 AM**, ahead of the week's feature
 meetings, so the mismatches are on the table before commitments get repeated. The skill is
 stateless apart from `alias-map.json` and `last-audit.json`, so a run is just `/launchaudit`.
 
-Three ways to make it recur:
+**Currently scheduled by a macOS LaunchAgent**, `com.netapp.anf-launch-date-audit`, which runs
+`~/anf-launch-date-audit/run-weekly-audit.sh` at Monday 08:00 (`Weekday` 1 is Monday in launchd)
+and logs to `~/anf-launch-date-audit/launchd.log`.
 
-- **Cursor Automation** (preferred) — a scheduled automation on `0 8 * * 1`. Create it from the
-  Agents Window with the `automate` skill; the Automations editor handoff is unavailable in a
-  normal chat window, so this cannot be set up from an ordinary session.
+The runner drives the CLI headlessly with `cursor-agent --print --approve-mcps --trust --force`.
+All four flags are needed: a headless run cannot answer an MCP approval or a tool prompt, so
+without them the job blocks or silently does nothing.
+
+**It preflights authentication before doing any work.** An unauthenticated `cursor-agent` prints
+"Authentication required" and still exits 0, so a scheduled run would otherwise fail silently
+every Monday and look like a success. The script checks for that string first and raises a
+desktop notification instead. If the audit ever stops arriving, read `launchd.log` before
+suspecting the skill — `cursor-agent login` is interactive and its session does expire.
+
+Other options:
+
 - **In-session**: `/loop 7d /launchaudit`, which lasts only as long as the session.
-- **Unattended**: a macOS LaunchAgent, same pattern as
-  `~/anf-plr-weekly-report/com.netapp.anf-plr-report.plist`. Not installed by default — ask
-  before creating one.
+- **Cursor Automation**: a scheduled automation on `0 8 * * 1`, created from the Agents Window
+  with the `automate` skill. The Automations editor handoff is unavailable in a normal chat
+  window, so it cannot be set up from an ordinary session.
 
 A Monday run reads whatever the calendar and Jira say that morning. It does not need the
 previous snapshot to produce a report, so a missed week costs nothing but the diff.
