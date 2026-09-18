@@ -1,0 +1,12 @@
+{
+  "_comment": "Seed override map for anf-launch-date-audit. Copied to ~/anf-launch-date-audit/alias-map.json on first run; edit the copy in the working directory, not this seed. Keys are normalized calendar titles (lowercase, whitespace collapsed). When one title appears on the calendar more than once, key on 'title::original-release-date' to disambiguate. Values are NFSAAS Initiative keys. Only add an entry once a human has confirmed the pairing.",
+
+  "_ignore": [
+    "insight - netapp conference",
+    "ignite conference (microsoft)"
+  ],
+
+  "_ignore_comment": "Calendar rows that are marketing or conference milestones rather than ANF features. Excluded from the tables and counts, and listed once in the report so the exclusion is visible.",
+
+  "aliases": {}
+}

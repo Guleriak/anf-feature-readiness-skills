@@ -10,6 +10,7 @@ Cursor AI skills for automating ANF Feature Readiness Plans, Initiative Hubs, an
 | **feature-readiness-hub** | Creates an Initiative-level parent page in Confluence that groups all feature plans under one initiative |
 | **Weekly-Ring** | Generates the weekly PLR meeting report - Confluence page + HTML email with the full feature table |
 | **anf-functional-spec** | Builds/updates the ANF Functional Spec & Approval Tracker on Confluence from the PLR Dashboard and NFSAAS Jira initiatives - pending CSA/MSFT approvers, cycle-time metrics, Done/In Progress/At Risk status, optional email digest |
+| **anf-launch-date-audit** | Weekly Monday audit comparing launch dates in the ANF Launch Calendar (SharePoint) against the Customer announcement date on NFSAAS Jira Initiatives - flags every date the two systems disagree on, grouped by Jira status, and emails an executive report. Read-only |
 
 ## Quickstart
 

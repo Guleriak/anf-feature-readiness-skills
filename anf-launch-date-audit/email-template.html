@@ -1,0 +1,122 @@
+<!--
+  ANF Launch Date Audit - canonical email structure.
+  Replace {{TOKENS}} and the example rows. Do not change the structure or the inline styles;
+  see reference.md "Email rendering rules" for why each attribute is present.
+-->
+<html xmlns:o="urn:schemas-microsoft-com:office:office">
+<body style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px; color:#172b4d; margin:0; padding:16px;">
+
+<h2 style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:18px; color:#172b4d; margin:0 0 4px 0;">ANF Launch Date Audit</h2>
+<p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px; line-height:1.4; mso-line-height-rule:exactly; margin:0 0 14px 0; color:#666666;">{{RUN_DATE_LONG}} &nbsp;|&nbsp; ANF Launch Calendar (SharePoint) vs Customer announcement date (NFSAAS Jira)</p>
+
+<!-- ============ AT A GLANCE ============ -->
+<table cellpadding="0" cellspacing="0" border="0" width="100%" role="presentation" style="border-collapse:collapse; width:100%; margin:0 0 6px 0;">
+  <tr>
+    <td bgcolor="#ffffff" align="center" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background-color:white; border:1px solid #333; padding:10px 6px; line-height:1.4; mso-line-height-rule:exactly;">
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:22px; font-weight:bold; color:#d32f2f;">{{N_OVERDUE}}</div>
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:11px; color:#666666;">Overdue</div>
+    </td>
+    <td bgcolor="#ffffff" align="center" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background-color:white; border:1px solid #333; padding:10px 6px; line-height:1.4; mso-line-height-rule:exactly;">
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:22px; font-weight:bold; color:#d32f2f;">{{N_7}}</div>
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:11px; color:#666666;">Due &le; 7 days</div>
+    </td>
+    <td bgcolor="#ffffff" align="center" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background-color:white; border:1px solid #333; padding:10px 6px; line-height:1.4; mso-line-height-rule:exactly;">
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:22px; font-weight:bold; color:#e67e00;">{{N_30}}</div>
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:11px; color:#666666;">Due &le; 30 days</div>
+    </td>
+    <td bgcolor="#ffffff" align="center" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background-color:white; border:1px solid #333; padding:10px 6px; line-height:1.4; mso-line-height-rule:exactly;">
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:22px; font-weight:bold; color:#B38600;">{{N_60}}</div>
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:11px; color:#666666;">Due &le; 60 days</div>
+    </td>
+    <td bgcolor="#ffffff" align="center" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background-color:white; border:1px solid #333; padding:10px 6px; line-height:1.4; mso-line-height-rule:exactly;">
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:22px; font-weight:bold; color:#666666;">{{N_BEYOND}}</div>
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:11px; color:#666666;">Beyond 60 days</div>
+    </td>
+    <td bgcolor="#ffffff" align="center" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background-color:white; border:1px solid #333; padding:10px 6px; line-height:1.4; mso-line-height-rule:exactly;">
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:22px; font-weight:bold; color:#2e7d32;">{{N_CLOSED}}</div>
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:11px; color:#666666;">Closed</div>
+    </td>
+    <td bgcolor="#ffffff" align="center" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background-color:white; border:1px solid #333; padding:10px 6px; line-height:1.4; mso-line-height-rule:exactly;">
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:22px; font-weight:bold; color:#d32f2f;">{{N_MISMATCH}}</div>
+      <div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:11px; color:#666666;">Revised &ne; Jira</div>
+    </td>
+  </tr>
+</table>
+<p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:11px; line-height:1.4; mso-line-height-rule:exactly; margin:0 0 16px 0; color:#666666;">{{N_TRACKED}} features tracked &nbsp;|&nbsp; {{N_UNMATCHED}} unmatched &nbsp;|&nbsp; {{N_AMBIGUOUS}} ambiguous</p>
+
+<!-- ============ EXECUTIVE SUMMARY (red / yellow only, max 5) ============ -->
+<div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#eef5ff; border-left:4px solid #0052CC; padding:10px 14px; margin:0 0 16px 0;">
+  <p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px; font-weight:bold; line-height:1.4; mso-line-height-rule:exactly; margin:0 0 6px 0;">Executive summary</p>
+  <p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px; line-height:1.4; mso-line-height-rule:exactly; margin:0 0 4px 0;">&bull; {{BULLET_1}}</p>
+  <p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px; line-height:1.4; mso-line-height-rule:exactly; margin:0 0 4px 0;">&bull; {{BULLET_2}}</p>
+  <p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px; line-height:1.4; mso-line-height-rule:exactly; margin:0 0 4px 0;">&bull; {{BULLET_3}}</p>
+  <p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px; line-height:1.4; mso-line-height-rule:exactly; margin:0 0 4px 0;">&bull; {{BULLET_4}}</p>
+  <p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px; line-height:1.4; mso-line-height-rule:exactly; margin:0;">&bull; {{BULLET_5}}</p>
+</div>
+
+<!-- ============ UPCOMING LAUNCHES (next 60 days) ============ -->
+<h3 style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:14px; color:#172b4d; margin:0 0 6px 0;">Upcoming launches &mdash; next 60 days</h3>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" role="presentation" style="border-collapse:collapse; width:100%; margin:0 0 18px 0;">
+  <colgroup><col style="width:11%"><col style="width:44%"><col style="width:12%"><col style="width:14%"><col style="width:19%"></colgroup>
+  <tr>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Date</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Feature</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Jira</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Stage</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Variance</th>
+  </tr>
+  <!-- repeat per upcoming feature -->
+  <tr>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;">{{DATE}}</td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;">{{FEATURE}}</td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;"><a href="https://jira.ngage.netapp.com/browse/{{KEY}}" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; color:#0052CC; text-decoration:none;">{{KEY}}</a></td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;">{{STAGE}}</td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;"><span style="color:#d32f2f; font-weight:bold;">&#128308; {{BADGE}}</span></td>
+  </tr>
+</table>
+
+<!-- ============ FULL COMPARISON ============ -->
+<h3 style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:14px; color:#172b4d; margin:0 0 6px 0;">Full date comparison</h3>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" role="presentation" style="border-collapse:collapse; width:100%; margin:0 0 18px 0;">
+  <colgroup><col style="width:8%"><col style="width:20%"><col style="width:7%"><col style="width:7%"><col style="width:4%"><col style="width:8%"><col style="width:8%"><col style="width:10%"><col style="width:7%"><col style="width:8%"><col style="width:13%"></colgroup>
+  <tr>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Variance</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Feature</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Jira Key</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Stage</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Tier</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Cal Revised</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Jira Date</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Revised vs Jira</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Cal Status</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Jira Status</th>
+    <th bgcolor="#0052CC" align="left" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#0052CC; color:#ffffff; font-size:10px; padding:6px 8px; border:1px solid #333; line-height:1.4; mso-line-height-rule:exactly;">Note</th>
+  </tr>
+  <!-- repeat per tracked feature, sorted by reference date ascending -->
+  <tr>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;"><span style="color:#d32f2f; font-weight:bold;">&#128308; Major drift</span></td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;">{{FEATURE}}</td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;"><a href="https://jira.ngage.netapp.com/browse/{{KEY}}" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; color:#0052CC; text-decoration:none;">{{KEY}}</a></td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;">{{STAGE}}</td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;">{{TIER}}</td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;">{{CAL_REVISED}}</td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;">{{JIRA_DATE}}</td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly; color:#d32f2f; font-weight:bold;">{{REVISED_VS_JIRA}}</td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;">{{CAL_STATUS}}</td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;">{{JIRA_STATUS}}</td>
+    <td bgcolor="#ffffff" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; padding:4px 6px; border:1px solid #333; font-size:10px; vertical-align:top; background-color:white; line-height:1.4; mso-line-height-rule:exactly;">{{NOTE}}</td>
+  </tr>
+</table>
+
+<!-- ============ UNMATCHED / AMBIGUOUS ============ -->
+<div style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; background:#fff8e1; border-left:4px solid #B38600; padding:10px 14px; margin:0 0 16px 0;">
+  <p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px; font-weight:bold; line-height:1.4; mso-line-height-rule:exactly; margin:0 0 6px 0;">Needs resolution</p>
+  <p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px; line-height:1.4; mso-line-height-rule:exactly; margin:0 0 4px 0;"><b>Ambiguous ({{N_AMBIGUOUS}}):</b> {{AMBIGUOUS_LIST}}</p>
+  <p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px; line-height:1.4; mso-line-height-rule:exactly; margin:0 0 4px 0;"><b>On calendar, no Jira match ({{N_UNMATCHED_CAL}}):</b> {{UNMATCHED_CAL_LIST}}</p>
+  <p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:12px; line-height:1.4; mso-line-height-rule:exactly; margin:0;"><b>In Jira, not on calendar ({{N_UNMATCHED_JIRA}}):</b> {{UNMATCHED_JIRA_LIST}}</p>
+</div>
+
+<p style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; font-size:11px; line-height:1.4; mso-line-height-rule:exactly; margin:0; color:#666666;">Sources: <a href="https://netapp.sharepoint.com/sites/CloudStorage/Lists/ANF%20Launch%20Calendar/Whats%20Next.aspx" style="font-family:Calibri,Segoe UI,Arial,Helvetica,sans-serif; color:#0052CC; text-decoration:none;">ANF Launch Calendar</a> &nbsp;|&nbsp; NFSAAS Jira Initiatives (Customer announcement date). Read-only audit &mdash; no system was modified.</p>
+
+</body>
+</html>
