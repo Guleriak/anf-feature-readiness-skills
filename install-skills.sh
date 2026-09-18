@@ -12,6 +12,7 @@ SKILL_FOLDERS=(
   "feature-readiness-hub"
   "feature-readiness-plan"
   "anf-functional-spec"
+  "anf-launch-date-audit"
 )
 EXTRA_FILES=(
   "SETUP-GUIDE.md"
