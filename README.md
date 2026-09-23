@@ -6,6 +6,8 @@ Cursor AI skills for automating ANF Feature Readiness Plans, Initiative Hubs, an
 
 | Skill | Description |
 |---|---|
+| **jira-automation-anf-feature-clc** | Creates the Feature Readiness Tracker Epic and child Stories in ngage Jira, then publishes or updates the PLR tracking page |
+| **anf-plr-readiness-tracking-page** | Creates one Confluence PLR tracking page per feature under the ANF PLR Dashboard; Feature Readiness Status Summary comes from the parent Initiative |
 | **feature-readiness-plan** | Creates a Feature Readiness Plan (Private Preview / Public Preview / GA) from a Jira issue, calculates milestone dates, populates owners, publishes to Confluence |
 | **feature-readiness-hub** | Creates an Initiative-level parent page in Confluence that groups all feature plans under one initiative |
 | **Weekly-Ring** | Generates the weekly PLR meeting report - Confluence page + HTML email with the full feature table |
